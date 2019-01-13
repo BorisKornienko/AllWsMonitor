@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}All WS Monitor{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <link rel="stylesheet" href="{% static 'win_events/style/base.css'  %}">
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'win_events/img/metinvest.png' %}">
+        </div>
+        <div class="siteName">
+            <h1>События Операционной Системы</h1>
+            РАБОЧИЕ СТАНЦИИ
+        </div>
+    </header>
+
+    {% block content %}
+        there is no any content
+    {% endblock %}
+</body>
+</html>

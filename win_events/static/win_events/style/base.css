@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+header {
+    display: block;
+    background-color: gray;
+    height: 260;
+}
+.siteName {
+    display: inline-block;
+    text-align: center;
+    /* background-color: red; */
+    margin-left: 5%;
+    height: 260px;
+    /* padding-bottom: 5%; */
+}
+header h1{
+    font-weight: bold;
+}
+.logo {
+    /* display: inline-block; */
+    float: left;
+}
+.chart{
+    /* display: inline-block; */
+    padding: 10;
+    /* background-color: red; */
+    /* float: left; */
+}
+ul{
+    /* display: inline-block; */
+    background-color: rgba(10, 84, 15, 0.3);
+    padding: 10;
+}

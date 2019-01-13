@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title%} WinEvents {% endblock %}
+{% block content %}  
+<h1>MMK</h1>
+<div class="pieChart-block">
+    <div class="chart">{{ cht_syscrit|safe }}</div>
+    <ul class="events-list">
+        {% for sys_ev in sys_crits_ystd %}
+        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="pieChart-block">
+    <div class="chart">{{ cht_syserr|safe }}</div>
+    <ul class="events-list">
+        {% for sys_ev in sys_errs_ystd %}
+        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="pieChart-block">
+    <div class="chart">{{ cht_syswarn|safe }}</div>
+    <ul class="events-list">
+        {% for sys_ev in sys_warns_ystd %}
+        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
+{% endblock %}

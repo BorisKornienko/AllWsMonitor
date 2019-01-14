@@ -163,6 +163,17 @@ def raw_csv_app_2w_scales(request):
 class IndexView(TemplateView):
     template_name = 'win_events/index.html'
 
+    def get_delta_events(self, win_events_model, delta_days, model_event_id):
+        """Get win_evenr model and number of delta days. If number is possitive, it's bad"""
+        delta_days = int(delta_days)
+        ystd = datetime.date.today() - datetime.timedelta(days=1)
+        ystd_2 = datetime.date.today() - datetime.timedelta(days=delta_days)
+        ystd_number = win_events_model.objects.filter(event_date=ystd).filter(event_id=model_event_id)
+        ystd_2_number = win_events_model.objects.filter(event_date=ystd_2).filter(event_id=model_event_id)
+        return len(ystd_number) - len(ystd_2_number)
+        
+
+
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
@@ -190,28 +201,46 @@ class IndexView(TemplateView):
             style=DarkStyle            
         )
 
-        # ========================MAKE IT AS DEF!=================================
-        sys_warn_QS = System_warning.objects.filter(event_id__in=cht_syswarn.get_data().keys()).filter(event_date__gte=yesterday)
+        # ========================MAKE IT AS A DEF!=================================
+        sys_warn_delta = {}
+        sys_warn_delta_1 = {}
+        sys_warn_delta_2 = {}
+        ystd_2 = datetime.date.today() - datetime.timedelta(days=2)
+        sys_warn_QS = System_warning.objects.filter(event_date=yesterday).filter(event_id__in=cht_syswarn.get_data().keys())
+        sys_warn_QS_older = System_warning.objects.filter(event_date=ystd_2).filter(event_id__in=cht_syswarn.get_data().keys())
+        for sw in sys_warn_QS_older:
+            if sw.event_id in sys_warn_delta_2.keys():
+                sys_warn_delta_2[sw.event_id] += 1
+            else:
+                sys_warn_delta_2[sw.event_id] = 1
+        sys_warn_delta_1 = cht_syswarn.get_data()
+        for event in sys_warn_delta_1.keys():
+            sys_warn_delta[event] = sys_warn_delta_1[event] - sys_warn_delta_2[event]
+
         sys_warn_list = list(sys_warn_QS)
         sys_warn_yesterday = {}
         for s_w in sys_warn_list:
             sys_warn_yesterday[s_w.event_id] = s_w
         sys_warn_yesterday = list(sys_warn_yesterday.values())
         
-        sys_err_QS = System_error.objects.filter(event_id__in=cht_syserr.get_data().keys()).filter(event_date__gte=yesterday)
+        sys_err_QS = System_error.objects.filter(event_date__gte=yesterday).filter(event_id__in=cht_syserr.get_data().keys())
         sys_err_list = list(sys_err_QS)
         sys_err_yesterday = {}
         for s_e in sys_err_list:
             sys_err_yesterday[s_e.event_id] = s_e
         sys_err_yesterday = list(sys_err_yesterday.values())
 
-        sys_crit_QS = System_critical.objects.filter(event_id__in=cht_syscrit.get_data().keys()).filter(event_date__gte=yesterday)
+        sys_crit_QS = System_critical.objects.filter(event_date__gte=yesterday).filter(event_id__in=cht_syscrit.get_data().keys())
         sys_crit_list = list(sys_crit_QS)
         sys_crit_yesterday = {}
         for s_c in sys_crit_list:
             sys_crit_yesterday[s_c.event_id] = s_c
         sys_crit_yesterday = list(sys_crit_yesterday.values())
         # ========================MAKE IT AS DEF!=================================END
+
+
+
+        
 
         # Call the `.generate()` method on our chart object
         # and pass it to template context.
@@ -221,4 +250,5 @@ class IndexView(TemplateView):
         context['sys_warns_ystd'] = sys_warn_yesterday
         context['sys_errs_ystd'] = sys_err_yesterday
         context['sys_crits_ystd'] = sys_crit_yesterday
+        context['sys_warn_delta'] = sys_warn_delta
         return context

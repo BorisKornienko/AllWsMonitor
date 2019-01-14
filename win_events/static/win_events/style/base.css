@@ -22,13 +22,36 @@ header h1{
     float: left;
 }
 .chart{
-    /* display: inline-block; */
+    display: inline-block;
     padding: 10;
     /* background-color: red; */
     /* float: left; */
 }
-ul{
+.events-list{
     /* display: inline-block; */
-    background-color: rgba(10, 84, 15, 0.3);
-    padding: 10;
+    list-style-type: none;
+    background-color: rgba(10, 84, 15, 0.1);
+    padding: 0;
+}
+.events-list li{
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 2px;
+    padding: 0.5em;
+    padding-left: 2em;
+}
+.delta{
+    display: inline-block;
+    list-style-type: none;
+}
+.delta li{
+    margin-top: 7;
+    font-size: 1.3em;
+    letter-spacing: 3;
+}
+.delta-red{
+    color: red;
+}
+.delta-green{
+    color: green;
 }

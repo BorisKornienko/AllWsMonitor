@@ -7,7 +7,7 @@
     <div class="chart">{{ cht_syscrit|safe }}</div>
     <ul class="events-list">
         {% for sys_ev in sys_crits_ystd %}
-        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span></li>
         {% endfor %}
     </ul>
 </div>
@@ -15,15 +15,25 @@
     <div class="chart">{{ cht_syserr|safe }}</div>
     <ul class="events-list">
         {% for sys_ev in sys_errs_ystd %}
-        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span></li>
         {% endfor %}
     </ul>
 </div>
 <div class="pieChart-block">
     <div class="chart">{{ cht_syswarn|safe }}</div>
+    <ul class="delta">
+        <strong>Дельта событий за два дня</strong>
+        {% for event, delta in sys_warn_delta.items %}
+        {% if delta > 0 %}
+        <li class="delta-red"> <a href="#warn-{{ event }}">id {{ event }} delta {{delta}} &uarr;</a></li>
+        {%else%}
+        <li class="delta-green">id {{ event }} delta {{delta}} &darr; </li>
+        {%endif%}
+        {% endfor %}
+    </ul>
     <ul class="events-list">
         {% for sys_ev in sys_warns_ystd %}
-        <li><h3>{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span> <hr></li>
+        <li><h3 id="warn-{{ sys_ev.event_id }}">{{sys_ev.event_id}} <em>{{ sys_ev.event_source }}</em></h3>  <span>{{ sys_ev.event_description }}</span></li>
         {% endfor %}
     </ul>
 </div>

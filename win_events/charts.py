@@ -18,7 +18,7 @@ class SystemWarningPieChart():
         # two_weeks = datetime.date.today() - datetime.timedelta(days=14)
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         data = {}
-        for sys_warn in System_warning.objects.filter(event_date__gte=yesterday):
+        for sys_warn in System_warning.objects.filter(event_date=yesterday):
             if sys_warn.event_id in data.keys():
                 data[sys_warn.event_id] += 1
             else:
